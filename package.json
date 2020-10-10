@@ -1,5 +1,5 @@
 {
-  "name": "task",
+  "name": "to-do",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -19,7 +19,10 @@
     "@angular/platform-browser": "~10.0.3",
     "@angular/platform-browser-dynamic": "~10.0.3",
     "@angular/router": "~10.0.3",
+    "@apollo/client": "^3.0.0",
+    "apollo-angular": "^2.0.4",
     "bulma": "^0.9.0",
+    "graphql": "^15.0.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
