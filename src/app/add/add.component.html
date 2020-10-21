@@ -1,0 +1,45 @@
+
+<div [ngClass]="{'is-active': isDisabled, 'is-clipped': !isDisabled}" class="modal is-clipped" >
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          Task Cannot be Created
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="change()" class="modal-close is-large" aria-label="close"></button>
+</div>
+<div class="field">
+  <label class="label">Task</label>
+  <div class="control">
+    <textarea [(ngModel)]="task" class="textarea" placeholder="Task"></textarea>
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Date</label>
+  <div class="control">
+    <input class="input" [(ngModel)]="date" type="date" >
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Priority</label>
+  <div class="control">
+    <input class="input" [(ngModel)]="priority" type="number" placeholder="Max. Priority = 0, Min. Priority = 5">
+  </div>
+</div>
+
+
+
+<div class="field is-grouped">
+  <div class="control">
+    <button class="button is-link" (click)="add()">Submit</button>
+  </div>
+  <div class="control">
+    <button routerLink="/" class="button is-link is-light">Cancel</button>
+  </div>
+</div>
