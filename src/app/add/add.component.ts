@@ -4,20 +4,18 @@ import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router'
 
 const ADD_TASK = gql`
-mutation addtask($name: String, $status: Boolean, $time: String, $priority: Number ){
-  addtask(input:[{
-    id: "hello"
-    name:$name
-    status:$status
-    time:$time
-    priority: $priority
-  }]) {
-    task{
-      name
-      status
-      time
-      priority
-    }
+mutation addtask($name: String, $email: String, $status: String, $time: String, $priority: Int ){
+  addTask(input:{
+    taskName:$name
+    taskStatus:$status
+    taskTime:$time
+    taskPriority: $priority
+    emailId: $email
+  }) {
+      taskName
+      taskStatus
+      taskTime
+      taskPriority
   }
 }`;
 
@@ -33,7 +31,7 @@ export class AddComponent {
 
   task: string;
   isDisabled: boolean = false;
-  status: boolean = false;
+  status: string = "progress";
   date: string;
   priority: number;
 
@@ -46,9 +44,10 @@ export class AddComponent {
   		mutation: ADD_TASK,
   		variables: {
   			name: this.task,
-  			status: false,
+  			status: this.status,
   			time: this.date,
-        priority: this.priority
+        priority: this.priority,
+        email: "riyandhiman14@gmail.com"
   		}
   	}).subscribe(({data})=>{
   		this.router.navigate(['/task']);

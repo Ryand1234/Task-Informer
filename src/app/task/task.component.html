@@ -1,9 +1,9 @@
 <div *ngFor="let task of tasks">
-	<div *ngIf=(task.time)>
-  <div *ngIf=(task.name) class="card">
+	<div *ngIf=(task.taskTime)>
+  <div *ngIf=(task.taskName) class="card">
   	<header class="card-header">
     	<p class="card-header-title">
-      	{{task.name}}
+      	{{task.taskName}}
     	</p>
     <a href="#" class="card-header-icon" aria-label="more options">
       <span class="icon">
@@ -13,7 +13,7 @@
   </header>
   <div class="card-content">
     <div class="content">
-      <time datetime="2016-1-1">{{task.time}}</time>
+      <time datetime="2016-1-1">{{task.taskTime}}</time>
     </div>
   </div>
   <footer class="card-footer">

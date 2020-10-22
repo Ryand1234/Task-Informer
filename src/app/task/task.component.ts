@@ -4,18 +4,19 @@ import  gql from 'graphql-tag';
 
 const GET_TASK = gql`
 	query task{
-		querytask{
-	      name
-    	  status
-	      time
+		task{
+	      id
+        taskName
+        taskPriority
+        taskTime
     	}
 	}
 `;
 
 interface Itask{
-	name: string,
-	status: boolean,
-	time: string
+	taskName: string,
+	taskTime: string,
+  taskPriority: number
 }
 
 @Component({
@@ -25,11 +26,6 @@ interface Itask{
 })
 export class TaskComponent implements OnInit {
 
-
-  /*{name: "Wake up", status: true, time: "14*02*2001"},
-  {name: "Take A Bath", status: true, time: "14-02-2001"},
-  {name: "Join Online Classes", status: true, time: "14-02-2001"}
-  */
 
 	tasks: Array<Itask> = []
   	
@@ -42,7 +38,7 @@ export class TaskComponent implements OnInit {
   		this.query = this.apollo.watchQuery({query: GET_TASK});
 
   		this.query.valueChanges.subscribe(result =>{
-  			this.tasks = result.data.querytask;
+  			this.tasks = result.data.task;
   		})
   	}
 
