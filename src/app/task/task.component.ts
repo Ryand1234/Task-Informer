@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import  gql from 'graphql-tag';
-
+import { Router } from '@angular/router'
 const GET_TASK = gql`
 	query task{
 		task{
@@ -9,14 +9,30 @@ const GET_TASK = gql`
         taskName
         taskPriority
         taskTime
+        taskStatus
     	}
 	}
+`;
+
+const UPDATE_TASK = gql`
+  mutation update_task(
+      $id: String!
+      $taskStatus: String
+    ) {
+    updateTask(id: $id, input:{
+      taskStatus: $taskStatus
+    }){
+      taskName
+      taskStatus
+    }
+  }
 `;
 
 interface Itask{
 	taskName: string,
 	taskTime: string,
-  taskPriority: number
+  taskPriority: number,
+  taskStatus: string
 }
 
 @Component({
@@ -27,11 +43,11 @@ interface Itask{
 export class TaskComponent implements OnInit {
 
 
-	tasks: Array<Itask> = []
+	  tasks: Array<Itask> = []
   	
   	private query: QueryRef<any>;
 
-  	constructor(public apollo: Apollo) { }
+  	constructor(public apollo: Apollo, public router: Router) { }
 
 
   	ngOnInit(): void {
@@ -42,8 +58,19 @@ export class TaskComponent implements OnInit {
   		})
   	}
 
-  	complete(){
-  		
+  	complete(id){
+      console.log("I: ", id)
+  		this.apollo.mutate({
+        mutation: UPDATE_TASK,
+        variables: {
+          id: id,
+          taskStatus: "Complete"
+        }
+      }).subscribe(({data})=>{
+        this.router.navigate(["/task"])
+      }, (err)=>{
+        console.log("E: ", err);
+      })
   	}
 
 }
