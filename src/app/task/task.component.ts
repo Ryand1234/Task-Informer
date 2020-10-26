@@ -28,6 +28,15 @@ const UPDATE_TASK = gql`
   }
 `;
 
+const DELETE_TASK = gql `
+  mutation delete_Task($id: String!){
+    deleteTask(id: $id){
+      taskName
+      id
+    }
+  }
+`;
+
 interface Itask{
 	taskName: string,
 	taskTime: string,
@@ -59,7 +68,6 @@ export class TaskComponent implements OnInit {
   	}
 
   	complete(id){
-      console.log("I: ", id)
   		this.apollo.mutate({
         mutation: UPDATE_TASK,
         variables: {
@@ -68,9 +76,18 @@ export class TaskComponent implements OnInit {
         }
       }).subscribe(({data})=>{
         this.router.navigate(["/task"])
-      }, (err)=>{
-        console.log("E: ", err);
       })
   	}
+
+    delete(id){
+      this.apollo.mutate({
+        mutation: DELETE_TASK,
+        variables: {
+          id: id
+        }
+      }).subscribe(({data})=>{
+        this.router.navigate(["/task"]);
+      })
+    }
 
 }
