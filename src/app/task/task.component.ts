@@ -22,7 +22,10 @@ const UPDATE_TASK = gql`
     updateTask(id: $id, input:{
       taskStatus: $taskStatus
     }){
+      id
       taskName
+      taskPriority
+      taskTime
       taskStatus
     }
   }
@@ -31,8 +34,11 @@ const UPDATE_TASK = gql`
 const DELETE_TASK = gql `
   mutation delete_Task($id: String!){
     deleteTask(id: $id){
-      taskName
       id
+      taskName
+      taskPriority
+      taskTime
+      taskStatus
     }
   }
 `;
@@ -52,7 +58,8 @@ interface Itask{
 export class TaskComponent implements OnInit {
 
 
-	  tasks: Array<Itask> = []
+	  allTasks: Array<any> = []
+    tasks: Array<any> = []
   	
   	private query: QueryRef<any>;
 
@@ -63,8 +70,9 @@ export class TaskComponent implements OnInit {
   		this.query = this.apollo.watchQuery({query: GET_TASK});
 
   		this.query.valueChanges.subscribe(result =>{
-  			this.tasks = result.data.task;
-  		})
+  			this.allTasks = result.data.task
+        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+      })
   	}
 
   	complete(id){
@@ -74,8 +82,9 @@ export class TaskComponent implements OnInit {
           id: id,
           taskStatus: "Complete"
         }
-      }).subscribe(({data})=>{
-        this.router.navigate(["/task"])
+      }).subscribe((data: any)=>{
+        this.allTasks = data.data.deleteTask
+        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
       })
   	}
 
@@ -85,8 +94,9 @@ export class TaskComponent implements OnInit {
         variables: {
           id: id
         }
-      }).subscribe(({data})=>{
-        this.router.navigate(["/task"]);
+      }).subscribe((data: any)=>{
+        this.allTasks = data.data.deleteTask
+        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
       })
     }
 

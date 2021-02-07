@@ -1,10 +1,8 @@
 const { ApolloServer } = require('apollo-server');
 const { makeExecutableSchema } = require('graphql-tools');
-const mongoose = require('mongoose');
 const { taskResolver, taskTypeDefs } = require('./schema/task.schema')
 require('dotenv').config();
-
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true});
+require('./db.js');
 
 const rootTypeDefs = `
 	type Query

@@ -27,7 +27,11 @@
     "graphql": "^15.0.0",
     "graphql-tools": "^6.2.4",
     "mongoose": "^5.10.9",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "rxjs": "~6.5.5",
+    "sequelize": "^6.5.0",
+    "sequelize-cli": "^6.2.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

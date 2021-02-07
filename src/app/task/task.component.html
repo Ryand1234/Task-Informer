@@ -1,10 +1,13 @@
-<div *ngFor="let task of tasks">
-	<div *ngIf="task.taskStatus != 'Complete'">
+<div>
+  <div *ngIf="tasks.length === 0">
+    <h1>No Task Running!!!!!</h1>
+  </div>
+  <div *ngFor="let task of tasks">
     <div *ngIf=(task.taskName) class="card">
-    	<header class="card-header">
-      	<p class="card-header-title">
-        	{{task.taskName}}
-      	</p>
+      <header class="card-header">
+        <p class="card-header-title">
+          {{task.taskName}}
+        </p>
         <a href="#" class="card-header-icon" aria-label="more options">
           <span class="icon">
             <i class="fas fa-angle-down" aria-hidden="true"></i>

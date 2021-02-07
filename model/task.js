@@ -1,26 +1,28 @@
-const mongoose = require('mongoose')
+module.exports = (sequelize, type) => {
+	const Task = sequelize.define('task', 
+  {
+    id: {
+      type: type.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    taskName: {
+      type: type.STRING,
+      allowNull: false
+    },
+    taskPriority: {
+      type: type.INTEGER
+    },
+    taskTime: {
+      type: type.STRING
+    },
+    taskStatus: {
+      type: type.STRING
+    },
+    emailId: {
+      type: type.STRING
+    }
+  })
 
-const taskSchema = new mongoose.Schema({
-	taskName: {
-		type: String
-	},
-	taskPriority: {
-		type: Number
-	},
-	taskTime: {
-		type: String
-	},
-	taskStatus: {
-		type: String
-	},
-	emailId: {
-		type: String
-	},
-	createdAt: {
-		type: String
-	}
-})
-
-const Task = new mongoose.model('task', taskSchema);
-
-module.exports = Task;
+  return Task;
+}

@@ -1,4 +1,4 @@
-const Task = require('../model/task');
+const db = require('../db').db
 
 const taskTypeDefs = `
 
@@ -40,39 +40,47 @@ const taskTypeDefs = `
 const taskResolver = {
 	Query: {
 		task: async(_) =>{
-			let tasks = await Task.find({})
+			let tasks = await db.Task.findAll({
+				order: [
+					['taskPriority', 'DESC'],
+					['taskName', 'ASC'],
+				],
+			})
 			return tasks;
 		}
 	},
 	Mutation: {
 		addTask: async(_, {input}) => {
 			input.createdAt = new Date()
-			const task = new Task(input);
-			await task.save(async(err, tasks)=>{
-				tasks = await Task.find({})
-				return tasks;
-			});
+			await db.Task.create(input)
+			tasks = await db.Task.findAll({
+				order: [
+					['taskPriority', 'DESC'],
+					['taskName', 'ASC'],
+				],
+			})
+			return tasks
 		},
 		updateTask: async(_,{id, input}) => {
-			let task = await Task.findById(id);
-			if(input.taskPriority != undefined)
-			{
-				task.taskPriority = input.taskPriority
-			}
-			if(input.taskStatus != undefined)
-			{
-				task.taskStatus = input.taskStatus
-			}
-			await Task.findByIdAndUpdate(id, task, async(err, tasks)=>{
-				tasks = await Task.find({})
-				return tasks;
+			let task = await db.Task.findOne({where:{id: id}});
+			await task.update(input)
+			tasks = await db.Task.findAll({
+				order: [
+					['taskPriority', 'DESC'],
+					['taskName', 'ASC'],
+				],
 			})
+			return tasks;
 		},
 		deleteTask: async(_, {id}) => {
-			await Task.findByIdAndRemove(id, async(err, task)=>{
-				tasks = await Task.find({})
-				return tasks;
+			await db.Task.destroy({where:{id: id}})
+			tasks = await db.Task.findAll({
+				order: [
+					['taskPriority', 'DESC'],
+					['taskName', 'ASC'],
+				],
 			})
+			return tasks;
 		}
 	}
 }
