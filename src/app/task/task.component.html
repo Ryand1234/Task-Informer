@@ -2,27 +2,33 @@
   <div *ngIf="tasks.length === 0">
     <h1>No Task Running!!!!!</h1>
   </div>
-  <div *ngFor="let task of tasks">
-    <div *ngIf=(task.taskName) class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          {{task.taskName}}
-        </p>
-        <a href="#" class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fas fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </a>
-      </header>
-      <div class="card-content">
-        <div class="content">
-          <time datetime="2016-1-1">Due Date: {{task.taskTime}}</time>
+  <div *ngFor="let colTask of tasks">
+    <div class="columns ml-5 pl-6 mt-5 pt-5">
+      <div *ngFor="let task of colTask">
+        <div *ngIf=(task.taskName) class="column is-12 px-6 mx-5">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{task.taskName}}
+              </p>
+              <a href="#" class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                  <button class="delete right"></button>
+                </span>
+              </a>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <time datetime="2016-1-1">Due Date: {{task.taskTime}}</time>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a class="card-footer-item" (click)="complete(task.id, task.taskName)">Completed</a>
+              <a  class="card-footer-item" (click)="delete(task.id, task.taskName)">Delete</a>
+            </footer>
+          </div>
         </div>
       </div>
-      <footer class="card-footer">
-        <a class="card-footer-item" (click)="complete(task.id, task.taskName)">Completed</a>
-        <a  class="card-footer-item" (click)="delete(task.id, task.taskName)">Delete</a>
-      </footer>
     </div>
   </div>
 </div>

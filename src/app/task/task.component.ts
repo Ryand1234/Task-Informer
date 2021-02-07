@@ -62,7 +62,8 @@ export class TaskComponent implements OnInit {
 
 	  allTasks: Array<any> = []
     tasks: Array<any> = []
-  	
+  	unfilteredtasks: Array<any> = []
+
   	private query: QueryRef<any>;
 
   	constructor(public apollo: Apollo, public router: Router) { }
@@ -73,9 +74,28 @@ export class TaskComponent implements OnInit {
 
   		this.query.valueChanges.subscribe(result =>{
   			this.allTasks = result.data.task
-        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+        this.tasks = this.filterTask(this.allTasks)
       })
   	}
+
+    filterTask(tasks) {
+      tasks = tasks.filter(task => task.taskStatus !== 'Complete')
+      let t = []
+      let filteredTask = []
+      let i =  0
+      tasks.forEach(task => {
+        t.push(task)
+        i++
+        if(i%3 == 0) {
+          filteredTask.push(t)
+          t = []
+        }
+      })
+      if(t.length > 0) {
+        filteredTask.push(t)
+      }
+      return filteredTask
+    }
 
   	complete(id, name){
       Swal.fire({
@@ -95,7 +115,8 @@ export class TaskComponent implements OnInit {
             }
           }).subscribe((data: any)=>{
             this.allTasks = data.data.updateTask
-            this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+            this.tasks = this.filterTask(this.allTasks)
+            
             Swal.fire(
               'Removed!',
               'Task completed successfully.',
@@ -129,7 +150,7 @@ export class TaskComponent implements OnInit {
             }
           }).subscribe((data: any)=>{
             this.allTasks = data.data.deleteTask
-            this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+            this.tasks = this.filterTask(this.allTasks)
             Swal.fire(
               'Removed!',
               'Task removed successfully.',
