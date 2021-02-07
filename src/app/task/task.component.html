@@ -16,12 +16,12 @@
       </header>
       <div class="card-content">
         <div class="content">
-          <time datetime="2016-1-1">{{task.taskTime}}</time>
+          <time datetime="2016-1-1">Due Date: {{task.taskTime}}</time>
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item" (click)="complete(task.id)">Completed</a>
-        <a  class="card-footer-item" (click)="delete(task.id)">Delete</a>
+        <a class="card-footer-item" (click)="complete(task.id, task.taskName)">Completed</a>
+        <a  class="card-footer-item" (click)="delete(task.id, task.taskName)">Delete</a>
       </footer>
     </div>
   </div>

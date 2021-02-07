@@ -32,6 +32,7 @@
     "rxjs": "~6.5.5",
     "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0",
+    "sweetalert2": "^10.14.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

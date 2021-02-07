@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import  gql from 'graphql-tag';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { Router } from '@angular/router'
+
 const GET_TASK = gql`
 	query task{
 		task{
@@ -75,28 +77,72 @@ export class TaskComponent implements OnInit {
       })
   	}
 
-  	complete(id){
-  		this.apollo.mutate({
-        mutation: UPDATE_TASK,
-        variables: {
-          id: id,
-          taskStatus: "Complete"
+  	complete(id, name){
+      Swal.fire({
+        title: `Are you sure task: ${name} is complete?`,
+        text: 'This process is irreversible.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) {
+          this.apollo.mutate({
+            mutation: UPDATE_TASK,
+            variables: {
+              id: id,
+              taskStatus: "Complete"
+            }
+          }).subscribe((data: any)=>{
+            this.allTasks = data.data.updateTask
+            this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+            Swal.fire(
+              'Removed!',
+              'Task completed successfully.',
+              'success'
+            )
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Task is still in progress.',
+            'error'
+          )
         }
-      }).subscribe((data: any)=>{
-        this.allTasks = data.data.deleteTask
-        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
       })
   	}
 
-    delete(id){
-      this.apollo.mutate({
-        mutation: DELETE_TASK,
-        variables: {
-          id: id
+    delete(id, name){
+      Swal.fire({
+        title: `Do you want to delete task: ${name}?`,
+        text: 'This process is irreversible.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.value) {
+          this.apollo.mutate({
+            mutation: DELETE_TASK,
+            variables: {
+              id: id
+            }
+          }).subscribe((data: any)=>{
+            this.allTasks = data.data.deleteTask
+            this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
+            Swal.fire(
+              'Removed!',
+              'Task removed successfully.',
+              'success'
+            )
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Task is still in progress.)',
+            'error'
+          )
         }
-      }).subscribe((data: any)=>{
-        this.allTasks = data.data.deleteTask
-        this.tasks = this.allTasks.filter(task => task.taskStatus !== 'Complete')
       })
     }
 

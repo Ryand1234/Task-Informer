@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router'
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 const ADD_TASK = gql`
 mutation addtask($name: String, $email: String, $status: String, $time: String, $priority: Int ){
@@ -30,14 +31,9 @@ export class AddComponent {
   			private router: Router) { }
 
   task: string;
-  isDisabled: boolean = false;
   status: string = "progress";
   date: string;
   priority: number;
-
-  change(){
-    this.isDisabled = !this.isDisabled;
-  }
 
   add(){
   	this.apollo.mutate({
@@ -52,8 +48,11 @@ export class AddComponent {
   	}).subscribe(({data})=>{
   		this.router.navigate(['/task']);
   	}, (err)=>{
-  		this.isDisabled = !this.isDisabled;
-      console.log("T: ", this.isDisabled)
+  		Swal.fire(
+        'Error',
+        'Task Cannot be created.',
+        'error'
+      )
   	})
   }
 
